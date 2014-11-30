@@ -47,6 +47,8 @@ namespace midicpp {
     public:
       //chan, num, val
       typedef std::function<void(uint8_t, uint8_t, uint8_t)> func3_t;
+      typedef std::function<void(uint8_t, uint8_t)> func2_t;
+      typedef std::function<void(status_type_t)> func1_t;
       //on, chan, num, val
       typedef std::function<void(bool, uint8_t, uint8_t, uint8_t)> funcNote_t;
 
@@ -62,10 +64,16 @@ namespace midicpp {
       //masks off status so you can read the first byte direct as channel if applicable
       //only one per status type, clear with nullptr
       void with_message3(status_type_t status, func3_t func) throw (std::runtime_error);
+      void with_message2(status_type_t status, func2_t func) throw (std::runtime_error);
+      void with_message1(status_type_t status, func1_t func) throw (std::runtime_error);
       void with_note(funcNote_t func);
+      void with_realtime(func1_t func);
     private:
       RtMidiIn mInput;
       std::map<uint8_t, func3_t> m3Funcs;
+      std::map<uint8_t, func2_t> m2Funcs;
+      std::map<uint8_t, func1_t> m1Funcs;
+      func1_t mRealtimeFunc;
       funcNote_t mNoteFunc = nullptr;
   };
 }

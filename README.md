@@ -1,4 +1,4 @@
 midicpp
 =======
 
-Simple C++ class for processing midi, based on rtmidi
+Simple C++11+ class for processing midi, based on rtmidi

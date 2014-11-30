@@ -56,6 +56,7 @@ namespace midicpp {
       explicit Input(std::string name) throw (std::runtime_error);
       explicit Input(unsigned int index) throw (std::runtime_error);
 
+      //processes [non blocking] input messages and executes callbacks
       void process();
 
       //masks off status so you can read the first byte direct as channel if applicable

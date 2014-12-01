@@ -89,7 +89,7 @@ namespace midicpp {
   }
 
   void Input::process() {
-    do {
+    while (true) {
       std::vector<unsigned char> message;
       mInput.getMessage(&message);
       if (message.size() == 0)
@@ -97,7 +97,7 @@ namespace midicpp {
 
       const uint8_t status = (message[0] & STATUS_MASK);
       const uint8_t chan = (message[0] & CHANNEL_MASK);
-      switch(message.size()) {
+      switch (message.size()) {
         case 3:
           {
             auto it = m3Funcs.find(status);
@@ -129,7 +129,7 @@ namespace midicpp {
         default:
           break;
       }
-    } while (true);
+    }
   }
 
   void Input::with_message3(status_type_t status, func3_t func) throw (std::runtime_error) {

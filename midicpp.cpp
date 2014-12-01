@@ -64,23 +64,25 @@ namespace midicpp {
   }
 
   Input::Input(std::string name) throw (std::runtime_error) {
-    try {
-      for (unsigned int i = 0; i < mInput.getPortCount(); i++) {
-        std::string n = mInput.getPortName(i);
-        if (n == name) {
-          mInput.openPort(i);
-          return;
-        }
+    for (unsigned int i = 0; i < mInput.getPortCount(); i++) {
+      std::string n = mInput.getPortName(i);
+      if (n == name) {
+        open(i);
+        return;
       }
-    } catch (RtError &error) {
-      throw std::runtime_error(error.what());
     }
     throw std::runtime_error("midi::Input() couldn't find port with name: " +  name);
   }
 
   Input::Input(unsigned int index) throw (std::runtime_error) {
+    open(index);
+  }
+
+  void Input::open(unsigned int index) throw (std::runtime_error) {
     try {
       mInput.openPort(index);
+      //XXX ignoring sysex for now
+      mInput.ignoreTypes(true, false, false);
     } catch (RtError &error) {
       throw std::runtime_error(error.what());
     }

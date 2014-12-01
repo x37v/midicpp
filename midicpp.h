@@ -69,6 +69,7 @@ namespace midicpp {
       void with_note(funcNote_t func);
       void with_realtime(func1_t func);
     private:
+      void open(unsigned int index) throw (std::runtime_error);
       RtMidiIn mInput;
       std::map<uint8_t, func3_t> m3Funcs;
       std::map<uint8_t, func2_t> m2Funcs;

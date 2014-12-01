@@ -115,15 +115,13 @@ namespace midicpp {
           }
           break;
         case 1:
-          {
-            if (status == 0xF0) {
-              status_type_t s = static_cast<status_type_t>(message[0]);
-              if (mRealtimeFunc && is_realtime(s))
-                mRealtimeFunc(s);
-              auto it = m1Funcs.find(s);
-              if (it != m1Funcs.end())
-                it->second(s);
-            }
+          if (status == 0xF0) {
+            status_type_t s = static_cast<status_type_t>(message[0]);
+            if (mRealtimeFunc && is_realtime(s))
+              mRealtimeFunc(s);
+            auto it = m1Funcs.find(s);
+            if (it != m1Funcs.end())
+              it->second(s);
           }
           break;
         default:

@@ -4,6 +4,10 @@
 using std::cout;
 using std::endl;
 
+void cc_cb(uint8_t chan, uint8_t num, uint8_t val) {
+  cout << "cc " << chan << " " << num << " " << val << endl;
+}
+
 int main(int argc, char *argv[]) {
   cout << "inputs: " << midicpp::Input::device_count() << endl;
   for (std::string n: midicpp::Input::device_list())
@@ -19,6 +23,8 @@ int main(int argc, char *argv[]) {
   auto cc = [](uint8_t chan, uint8_t num, uint8_t val) { };
   in.with_message3(midicpp::CC, cc);
   in.with_message3(midicpp::CC, nullptr); //clear it
+
+  in.with_message3(midicpp::CC, cc_cb);
   return 0;
 }
 

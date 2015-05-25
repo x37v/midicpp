@@ -37,6 +37,7 @@ namespace midicpp {
 
   enum masks_t {
     CHANNEL_MASK = 0x0F,
+    VAL_MASK = 0x7F,
     STATUS_MASK = 0xF0,
   };
 
@@ -49,8 +50,8 @@ namespace midicpp {
       typedef std::function<void(uint8_t, uint8_t, uint8_t)> func3_t;
       typedef std::function<void(uint8_t, uint8_t)> func2_t;
       typedef std::function<void(status_type_t)> func1_t;
-      //on, chan, num, val
-      typedef std::function<void(bool, uint8_t, uint8_t, uint8_t)> funcNote_t;
+      //on, chan, num, velocity
+      typedef std::function<void(bool on, uint8_t chan, uint8_t number, uint8_t velocity)> funcNote_t;
 
       static unsigned int device_count() throw (std::runtime_error);
       static std::vector<std::string> device_list() throw (std::runtime_error);
@@ -76,6 +77,22 @@ namespace midicpp {
       std::map<uint8_t, func1_t> m1Funcs;
       func1_t mRealtimeFunc;
       funcNote_t mNoteFunc = nullptr;
+  };
+
+  class Output {
+    public:
+      static unsigned int device_count() throw (std::runtime_error);
+      static std::vector<std::string> device_list() throw (std::runtime_error);
+
+      explicit Output(std::string name) throw (std::runtime_error);
+      explicit Output(unsigned int index) throw (std::runtime_error);
+
+      void note(bool on, uint8_t chan, uint8_t num, uint8_t velocity);
+      void cc(uint8_t chan, uint8_t num, uint8_t value);
+      void nrpn(uint8_t chan, uint16_t num, uint16_t val);
+    private:
+      void open(unsigned int index) throw (std::runtime_error);
+      RtMidiOut mOutput;
   };
 }
 
